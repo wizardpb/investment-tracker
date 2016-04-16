@@ -8,8 +8,7 @@
 (deftest yahoo-api
   (testing "URL formatting"
     (let [date (Date. 116 0 31)
-          equities [(->Equity "Yahoo" :equity :YHOO)
-                    (->Equity "Applee" :equity :AAPL)]]
+          equities [:YHOO :AAPL]]
       (is (=
             (format-yahoo-url equities date)
             (str "http://query.yahooapis.com/v1/public/yql?q="
@@ -53,9 +52,12 @@
   (testing "Env creation"
     (let [env (->FinEnvFromYahoo
                 (Date. 116 3 15)
-                [(->Equity "Yahoo" :equity :YHOO)
-                 (->Equity "Applee" :equity :AAPL)])]
+                [:YHOO :AAPL])]
       (is (= (:tradeDate env) (Date. 116 3 15)))
-      (is (= (price env (->Equity "Yahoo" :equity :YHOO)) 36.509998M)))
+      (is (= (closingPrice env :YHOO) 36.509998M))
+      (is (= (closeData env :YHOO) {:Close 36.509998M
+                                    :High  37.150002M
+                                    :Low   36.419998M
+                                    :Open  37.130001M})))
     )
   )

@@ -1,17 +1,19 @@
 (ns investment-tracker.pricing
   (:require [clojure.string :as str]
             [clj-http.client :as client])
-  (:use investment-tracker.instrument)
   (:import
     (java.util Date)))
 
 (defprotocol IFinEnv
-  (price [this equity]))
+  (closingPrice [this ticker])
+  (closeData [this ticker]))
 
 (defrecord FinEnv [tradeDate equityPrices]
   IFinEnv
-  (price [this equity]
-    (:Close (get equityPrices (:ticker equity)))))
+  (closingPrice [this ticker]
+    (:Close (get equityPrices ticker)))
+  (closeData [this ticker]
+    (get equityPrices ticker)))
 
 (def yahoo-historical-uri "http://query.yahooapis.com/v1/public/yql")
 (def yql-query-pattern
@@ -22,10 +24,10 @@
   )
 
 (defn format-yahoo-url
-  "Build and format a URL to obtain closing prices for equities on date"
-  [equities date]
+  "Build and format a URL to obtain closing prices for tickers on date"
+  [tickers date]
   (let [equity-string
-        (str "\"" (str/join "\",\"" (map #(name (:ticker %1)) equities)) "\"")
+        (str "\"" (str/join "\",\"" (map #(name %1) tickers)) "\"")
         ]
     (str yahoo-historical-uri "?"
          "q=" (str/escape (format yql-query-pattern equity-string date) {\space,"%20"})
