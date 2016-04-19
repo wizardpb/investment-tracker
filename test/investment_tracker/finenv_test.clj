@@ -70,7 +70,6 @@
                   }})
         ))
 
-  ;; TODO - mock out the http call
   (testing "Env creation - multiple tickers"
     (let [env (with-redefs
                 [client/get
