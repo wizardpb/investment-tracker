@@ -10,7 +10,11 @@
 (defn make-security-tx [rec]
   (str " {:db/id #db/id[:db.part/user] :instrument/name \"" (second rec) "\" :instrument/type :instrument.type/equity :equity/ticker :" (first rec) "}\n"))
 
-(defn make-security-tx-file []
+(defn make-security-tx-file
+  "Write out a file of Datomic txns, generating them from a CSV input file of a list
+  of securities - first column is the ticker, second is the name.
+  Filter out tickers with inadmissible keyword characters - mainly '.' and '^'"
+  []
   (with-open [out-file (io/writer (str schema-dir "securities.edn"))]
     (.write out-file "[\n")
     (doseq [fname secuirty-files]
