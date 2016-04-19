@@ -1,0 +1,22 @@
+;; Extra transaction attributes
+
+[
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :db.tx/type
+  :db/valueType          :db.type/keyword
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "Keyword type - :SchemaCreate, :UserTxn, etc."
+  :db.install/_attribute :db.part/db}
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :db.tx/actor-id
+  :db/valueType          :db.type/string
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "The actor initiating the txn - ofteh the uder id"
+  :db.install/_attribute :db.part/db}
+ {:db/id                 #db/id[:db.part/db]
+  :db/ident              :db.tx/description
+  :db/valueType          :db.type/string
+  :db/cardinality        :db.cardinality/one
+  :db/doc                "String description"
+  :db.install/_attribute :db.part/db}
+ ]

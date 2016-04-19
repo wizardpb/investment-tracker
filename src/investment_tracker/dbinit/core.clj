@@ -11,34 +11,28 @@
 
 (defn make-marker-tx
   [date & attrs]
+  (print attrs)
   (let [base {:db/id        #db/id[:db.part/tx]
               :db/txInstant date}]
-    (if attrs (merge base attrs) base)))
+    [(if attrs (merge base (first attrs)) base)]))
 
 (defn add-tx-attributes [conn]
   @(d/transact conn
-               [(make-marker-tx (Date. 500))
-                {:db/id                 #db/id[:db.part/db]
-                 :db/ident              :db/provenance
-                 :db/valueType          :db.type/string
-                 :db/cardinality        :db.cardinality/one
-                 :db/doc                "Transaction provenance"
-                 :db.install/_attribute :db.part/db}
-                {:db/id                 #db/id[:db.part/db]
-                 :db/ident              :db/actor-id
-                 :db/valueType          :db.type/string
-                 :db/cardinality        :db.cardinality/one
-                 :db/doc                "The actor initiating the txn"
-                 :db.install/_attribute :db.part/db}])
+               (concat
+                 (make-marker-tx (Date. 500))
+                 (read-string (slurp (str schema-dir "transaction.edn")))))
   )
 
 (defn load-schema [conn]
   (letfn [(load-schema-file [index fname]
             (let [schema (read-string (slurp (str schema-dir fname)))
-                  marker-tx [{:db/id        #db/id[:db.part/tx]
-                              :db/txInstant (Date. (* 1000 (inc index)))
-                              :db/provenance fname
-                              :db/actor-id "Setup"}]]
+                  marker-tx (make-marker-tx
+                              (Date. (* 1000 (inc index)))
+                              {:db.tx/type        :SchemaCreate
+                               :db.tx/actor-id    "Setup"
+                               :db.tx/description fname}
+                              )
+                  ]
               @(d/transact conn (concat marker-tx schema))))]
     (map-indexed load-schema-file schema-files)))
 
