@@ -1,4 +1,5 @@
 [
+
  ;; General instrument attributes
 
  {:db/id #db/id[:db.part/db]
@@ -27,7 +28,7 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "An instrument's CUSIP"
+  :db/doc "An security's CUSIP"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
@@ -35,7 +36,7 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
-  :db/doc "An instrument's ISIN"
+  :db/doc "An security's ISIN"
   :db.install/_attribute :db.part/db}
 
  ;; Securities - Equity

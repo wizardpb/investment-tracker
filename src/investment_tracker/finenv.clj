@@ -1,6 +1,7 @@
-(ns investment-tracker.pricing
+(ns investment-tracker.finenv
   (:require [clojure.string :as str]
-            [clj-http.client :as client])
+            [clj-http.client :as client]
+            [clojure.pprint :refer :all])
   (:import
     (java.util Date)))
 
@@ -23,7 +24,7 @@
        "and endDate = \"%2$tY-%2$tm-%2$td\"")
   )
 
-(defn format-yahoo-url
+(defn format-yahoo-historical-url
   "Build and format a URL to obtain closing prices for tickers on date"
   [tickers date]
   (let [equity-string
@@ -34,28 +35,29 @@
          "&env=store://datatables.org/alltableswithkeys"
          "&format=json")))
 
-(defn parse-yahoo-json
+(defn parse-yahoo-historical-json
   "Take a map built from returned JSON data and parse into a map indexing closing prices by ticker"
   [json-quotes]
   (letfn [(parse-ticker [quote-map]
             [
              (keyword (:Symbol quote-map))
              (into {} (map
-                        (fn [k] [k (BigDecimal. (k quote-map))])
+                        (fn [k]
+                          [k (BigDecimal. (k quote-map))])
                         [:Open :High :Low :Close]))])]
           (into {} (map parse-ticker json-quotes)))
   )
 
-(defn yahoo-lookup-prices
+(defn lookup-yahoo-historical-prices
   [date equities]
-  (parse-yahoo-json
-    (get-in
-      (client/get (format-yahoo-url equities date) {:as :json})
-      [:body :query :results :quote])))
+  (let [response (client/get (format-yahoo-historical-url equities date) {:as :json})
+        quotes (get-in response [:body :query :results :quote])]
+    (parse-yahoo-historical-json
+      (if (= 1 (get-in response [:body :query :count])) [quotes] quotes))))
 
-(defn ->FinEnvFromYahoo
-  "Create a FinEnv from Yahoo historical data. Input is the trade date and a list of instruments to include. Only
+(defn ->FinEnvClosePrices
+  "Create a FinEnv from Yahoo historical (close) data. Input is the trade date and a list of instruments to include. Only
   equities supported"
   [^Date date instruments]
-  (->FinEnv date (yahoo-lookup-prices date instruments))
+  (->FinEnv date (lookup-yahoo-historical-prices date instruments))
   )

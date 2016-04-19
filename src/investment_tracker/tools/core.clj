@@ -8,7 +8,7 @@
 (def data-dir "resources/schema/data/")
 
 (defn make-security-tx [rec]
-  (str " {:db/id #db/id[:db.part/user] :instrument/name \"" (second rec) "\" :equity/ticker :" (first rec) "}\n"))
+  (str " {:db/id #db/id[:db.part/user] :instrument/name \"" (second rec) "\" :instrument/type :instrument.type/equity :equity/ticker :" (first rec) "}\n"))
 
 (defn make-security-tx-file []
   (with-open [out-file (io/writer (str schema-dir "securities.edn"))]
