@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Leiningen: slingshot:0.12.2">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/slingshot/slingshot/0.12.2/slingshot-0.12.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/repository/slingshot/slingshot/0.12.2/slingshot-0.12.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

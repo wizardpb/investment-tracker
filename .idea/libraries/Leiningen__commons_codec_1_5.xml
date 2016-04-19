@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Leiningen: commons-codec:1.5">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.5/commons-codec-1.5.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/repository/commons-codec/commons-codec/1.5/commons-codec-1.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

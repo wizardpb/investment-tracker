@@ -11,7 +11,6 @@
 
 (defn make-marker-tx
   [date & attrs]
-  (print attrs)
   (let [base {:db/id        #db/id[:db.part/tx]
               :db/txInstant date}]
     [(if attrs (merge base (first attrs)) base)]))
