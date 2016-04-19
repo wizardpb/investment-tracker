@@ -8,7 +8,10 @@
 (def data-dir "resources/schema/data/")
 
 (defn make-security-tx [rec]
-  (str " {:db/id #db/id[:db.part/user] :instrument/name \"" (second rec) "\" :instrument/type :instrument.type/equity :equity/ticker :" (first rec) "}\n"))
+  (let [ticker (str ":" (first rec))
+        name (second rec)]
+    (str
+      "{:db/id #db/id[:db.part/user] :domain/datatype :Equity :instrument/name \"" name "\" :instrument/type :instrument.type/equity :equity/ticker " ticker "}\n")))
 
 (defn make-security-tx-file
   "Write out a file of Datomic txns, generating them from a CSV input file of a list

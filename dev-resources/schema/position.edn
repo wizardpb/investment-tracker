@@ -1,5 +1,7 @@
 [
 
+ ;; Database entity attributes for holding and valuing positions
+
  ;; Lots
 
  {:db/id #db/id[:db.part/db]
@@ -18,7 +20,7 @@
 
  {:db/id #db/id[:db.part/db]
   :db/ident :lot/action
-  :db/valueType :db.type/ref
+  :db/valueType :db.type/keyword
   :db/cardinality :db.cardinality/one
   :db/doc "The action - buy, sell, dividened, interest, etc."
   :db.install/_attribute :db.part/db}
@@ -59,19 +61,11 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :lot/unrelized-gain
+  :db/ident :lot/unrealized-gain
   :db/valueType :db.type/bigdec
   :db/cardinality :db.cardinality/one
   :db/doc "Unrealized gain of an open position. As of position close price date (+ve) or sell price (-ve)"
   :db.install/_attribute :db.part/db}
-
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/buy]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/sell]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/dividend]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/interest]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/split]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/cash-deposit]
- [:db/add #db/id[:db.part/user] :db/ident :lot.action/cash-withdrawal]
 
  ;; Position
 
