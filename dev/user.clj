@@ -8,4 +8,4 @@
 
 (println "loaded user.clj")
 
-;(def conn (d/connect di/uri))
+(def conn (d/connect di/uri))
