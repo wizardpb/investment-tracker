@@ -6,14 +6,16 @@
     (java.util Date)))
 
 (defprotocol IFinEnv
-  (closingPrice [this ticker])
-  (closeData [this ticker]))
+  (value-date [this])
+  (price [this ticker])
+  (price-data [this ticker]))
 
-(defrecord FinEnv [tradeDate equityPrices]
+(defrecord FinEnv [valueDate equityPrices]
   IFinEnv
-  (closingPrice [this ticker]
+  (value-date [this] valueDate)
+  (price [this ticker]
     (:Close (get equityPrices ticker)))
-  (closeData [this ticker]
+  (price-data [this ticker]
     (get equityPrices ticker)))
 
 (def yahoo-historical-uri "http://query.yahooapis.com/v1/public/yql")
@@ -58,6 +60,6 @@
 (defn ->FinEnvClosePrices
   "Create a FinEnv from Yahoo historical (close) data. Input is the trade date and a list of instruments to include. Only
   equities supported"
-  [^Date date instruments]
+  [date instruments]
   (->FinEnv date (lookup-yahoo-historical-prices date instruments))
   )

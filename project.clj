@@ -9,6 +9,8 @@
                   :exclusions [org.slf4j/slf4j-nop org.slf4j/slf4j-log4j12]]
                  [ch.qos.logback/logback-classic "1.0.1"]
                  [org.clojure/data.csv "0.1.3"]
+                 [de.jollyday/jollyday "0.5.1"]
+                 [clojure.java-time "0.2.0"]
                  ;[compojure "1.4.0"]
                  ;[ring/ring-defaults "0.1.5"]
                  ;[ring/ring-core "1.4.0"]

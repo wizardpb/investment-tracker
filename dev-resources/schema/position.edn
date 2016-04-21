@@ -40,7 +40,7 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :lot/cost
+  :db/ident :lot/tx-cost
   :db/valueType :db.type/bigdec
   :db/cardinality :db.cardinality/one
   :db/doc "The cost of the financial transaction. Positive is a cost, negative a refund. Basis is thus (quantity * price) + cost"

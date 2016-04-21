@@ -21,6 +21,10 @@
 (defn ->TaxLot
   "Create a new TaxLot"
   [attr-map]
+  ;; TODO - check attr-map contents
   (merge
-    {:domain/datatype :TaxLot}
+    {:domain/datatype :TaxLot
+     :lot/realized-gain 0M
+     :lot/unrealized-gain 0M
+     }
     attr-map))

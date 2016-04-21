@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Leiningen: org.clojure/tools.cli:0.2.2">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/repository/org/clojure/tools.cli/0.2.2/tools.cli-0.2.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/clojure/tools.cli/0.2.2/tools.cli-0.2.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

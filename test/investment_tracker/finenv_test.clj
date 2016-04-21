@@ -97,9 +97,9 @@
                 (->FinEnvClosePrices
                   (Date. 116 3 15)
                   [:YHOO :AAPL]))]
-      (is (= (:tradeDate env) (Date. 116 3 15)))
-      (is (= (closingPrice env :YHOO) 36.509998M))
-      (is (= (closeData env :YHOO) {:Close 36.509998M
+      (is (= (value-date env) (Date. 116 3  15)))
+      (is (= (price env :YHOO) 36.509998M))
+      (is (= (price-data env :YHOO) {:Close 36.509998M
                                     :High  37.150002M
                                     :Low   36.419998M
                                     :Open  37.130001M})))
@@ -123,9 +123,9 @@
                 (->FinEnvClosePrices
                   (Date. 116 3 15)
                   [:YHOO]))]
-      (is (= (:tradeDate env) (Date. 116 3 15)))
-      (is (= (closingPrice env :YHOO) 36.509998M))
-      (is (= (closeData env :YHOO) {:Close 36.509998M
+      (is (= (value-date env) (Date. 116 3 15)))
+      (is (= (price env :YHOO) 36.509998M))
+      (is (= (price-data env :YHOO) {:Close 36.509998M
                                     :High  37.150002M
                                     :Low   36.419998M
                                     :Open  37.130001M})))

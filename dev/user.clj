@@ -3,9 +3,12 @@
             [datomic.api :as d]
             [investment-tracker.dbinit.core :as di]
             [investment-tracker.tools.core :refer :all]
-            [investment-tracker.position :refer :all])
+            [investment-tracker.position :refer :all]
+            )
   )
+
+(defn connectdb []
+  (def conn (d/connect di/uri)))
 
 (println "loaded user.clj")
 
-(def conn (d/connect di/uri))

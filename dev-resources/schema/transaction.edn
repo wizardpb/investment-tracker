@@ -11,12 +11,12 @@
   :db/ident              :db.tx/actor-id
   :db/valueType          :db.type/string
   :db/cardinality        :db.cardinality/one
-  :db/doc                "The actor initiating the txn - ofteh the uder id"
+  :db/doc                "The actor initiating the txn - often the user id"
   :db.install/_attribute :db.part/db}
  {:db/id                 #db/id[:db.part/db]
   :db/ident              :db.tx/description
   :db/valueType          :db.type/string
   :db/cardinality        :db.cardinality/one
-  :db/doc                "String description"
+  :db/doc                "String description of the sction"
   :db.install/_attribute :db.part/db}
  ]
