@@ -11,14 +11,16 @@
   (let [ticker (str ":" (first rec))
         name (second rec)]
     (str
-      "{:db/id #db/id[:db.part/user] :domain/datatype :Equity :instrument/name \"" name "\" :instrument/type :instrument.type/equity :equity/ticker " ticker "}\n")))
+      "{:db/id #db/id[:db.part/user] :domain/datatype :Equity :security/name \""
+      name
+      "\" :security/type :security .type/equity :equity/ticker " ticker "}\n")))
 
 (defn make-security-tx-file
   "Write out a file of Datomic txns, generating them from a CSV input file of a list
   of securities - first column is the ticker, second is the name.
   Filter out tickers with inadmissible keyword characters - mainly '.' and '^'"
   []
-  (with-open [out-file (io/writer (str schema-dir "securities.edn"))]
+  (with-open [out-file (io/writer (str schema-dir "security_data.edn"))]
     (.write out-file "[\n")
     (doseq [fname secuirty-files]
      (with-open [in-file (io/reader (str data-dir fname))]

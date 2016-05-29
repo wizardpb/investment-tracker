@@ -1,0 +1,61 @@
+[
+ ;; Details of a financial transaction
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/trade-date
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "The transaction trade date"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/settlement-date
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "The transaction settlement date"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/action
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The action - buy, sell, dividened, interest, etc."
+  :db.install/_attribute :db.part/db}
+
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/buy]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/sell]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/dividend]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/split]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/cash-in]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/cash-out]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/shares-in]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/shares-out]
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/quantity
+  :db/valueType :db.type/bigdec
+  :db/cardinality :db.cardinality/one
+  :db/doc "The quantity bought or sold. Buy is positive, sell is negative"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/price
+  :db/valueType :db.type/bigdec
+  :db/cardinality :db.cardinality/one
+  :db/doc "The price sold or bought at"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/tx-cost
+  :db/valueType :db.type/bigdec
+  :db/cardinality :db.cardinality/one
+  :db/doc "The cost of the financial transaction. Positive is a cost, negative a refund. Basis is thus (quantity * price) + cost"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/comment
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Annotations, comment, etc."
+  :db.install/_attribute :db.part/db}
+ ]

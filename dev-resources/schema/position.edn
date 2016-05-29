@@ -2,78 +2,11 @@
 
  ;; Database entity attributes for holding and valuing positions
 
- ;; Lots
-
  {:db/id #db/id[:db.part/db]
-  :db/ident :lot/trade-date
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "The transaction trade date"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/settlement-date
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "The transaction settlement date"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/action
-  :db/valueType :db.type/keyword
-  :db/cardinality :db.cardinality/one
-  :db/doc "The action - buy, sell, dividened, interest, etc."
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/quantity
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "The quantity bought or sold. Buy is positive, sell is negative"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/price
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "The price sold or bought at"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/tx-cost
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "The cost of the financial transaction. Positive is a cost, negative a refund. Basis is thus (quantity * price) + cost"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/comment
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "Annotations, comment, etc."
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/realized-gain
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "Realized gain of a sell action"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :lot/unrealized-gain
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "Unrealized gain of an open position. As of position close price date (+ve) or sell price (-ve)"
-  :db.install/_attribute :db.part/db}
-
- ;; Position
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :position/instrument
+  :db/ident :position/security
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "The instrument held in the position"
+  :db/doc "The security held in the position"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
@@ -81,7 +14,7 @@
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true                                      ;Position owns it's lots
-  :db/doc "The lots"
+  :db/doc "The tax lots"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]

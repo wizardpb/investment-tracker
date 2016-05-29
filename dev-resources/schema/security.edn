@@ -1,25 +1,27 @@
 [
 
- ;; General instrument attributes
+ ;; General security attributes
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :instrument/name
+  :db/ident :security/name
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "An instrument's name"
+  :db/doc "An security's name"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :instrument/type
+  :db/ident :security/type
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "A instruments type enum value"
+  :db/doc "A securitys type enum value"
   :db.install/_attribute :db.part/db}
 
- ;; Instrument type enums
+ ;; Security type enums
 
- [:db/add #db/id[:db.part/user] :db/ident :instrument.type/cash]
- [:db/add #db/id[:db.part/user] :db/ident :instrument.type/equity]
+ [:db/add #db/id[:db.part/user] :db/ident :security.type/cash]
+ [:db/add #db/id[:db.part/user] :db/ident :security.type/stock]
+ [:db/add #db/id[:db.part/user] :db/ident :security.type/etf]
+ [:db/add #db/id[:db.part/user] :db/ident :security.type/mutual-fund]
 
  ;; Security - generall
 
@@ -39,7 +41,7 @@
   :db/doc "An security's ISIN"
   :db.install/_attribute :db.part/db}
 
- ;; Securities - Equity
+ ;; Securities - Equity, Cash
 
  {:db/id #db/id[:db.part/db]
   :db/ident :equity/ticker

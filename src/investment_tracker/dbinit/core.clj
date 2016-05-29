@@ -1,46 +1,43 @@
 (ns investment-tracker.dbinit.core
-  (:require [datomic.api :as d])
+  (:require [investment-tracker.util :refer :all]
+            [datomic.api :as d])
   (:import (java.util Date)))
 
 (def uri "datomic:free://localhost:4334/investment-tracker")
 (def schema-dir "dev-resources/schema/")
+(def data-dir "dev-resources/schema/data/")
+
 (def schema-files
-  ["system.edn" "instruments.edn" "securities.edn" "position.edn"])
+  ["system.edn" "account.edn" "fin_trans.edn" "security.edn" "position.edn"])
 
-;; Mark as the earliest txn
-
-(defn make-marker-tx
-  ([date attrs]
-   (let [base {:db/id #db/id[:db.part/tx] :db/txInstant date}]
-     [(merge base attrs)]))
-  ([date] [{:db/id #db/id[:db.part/tx] :db/txInstant date}]))
+(def data-files
+  ["accounts.edn"])
 
 (defn add-tx-attributes [conn]
   @(d/transact
      conn
-     (concat (make-marker-tx (Date. 500)) (read-string (slurp (str schema-dir "transaction.edn")))))
+     (make-txn-dated (Date. 500) (read-string (slurp (str schema-dir "db_txn.edn")))))
   )
 
-(defn load-schema-file [conn index fname]
-  (let [schema (read-string (slurp (str schema-dir fname)))
-        marker-tx (make-marker-tx
-                    (Date. (* 1000 index))
-                    {:db.tx/type        :SchemaCreate
-                     :db.tx/actor-id    "Setup"
-                     :db.tx/description fname}
-                    )
-        ]
+(defn load-edn-file [conn index dir fname]
+  (let [schema (read-string (slurp (str dir fname)))
+        txn-details {:date (Date. (* 1000 index))
+                     :type :SchemaCreate
+                     :actor "Setup"
+                     :desc fname}]
     (println fname "...")
-    @(d/transact conn (concat marker-tx schema))))
+    @(d/transact conn (->Txn txn-details schema))))
 
-(defn load-schema [conn]
-  (let [nfiles (count schema-files)]
+
+(defn load-files-from [dir files conn base-index]
+  (let [nfiles (count files)]
     (doall
-      (map load-schema-file (repeat nfiles conn) (range 1 (inc nfiles)) schema-files))))
+      (map load-edn-file (repeat nfiles conn) (range base-index (+ base-index nfiles)) (repeat nfiles dir) files))))
 
 (defn rebuild-db []
   (d/delete-database uri)
   (d/create-database uri)
   (let [conn (d/connect uri)]
     (add-tx-attributes conn)
-    (load-schema conn)))
+    (load-files-from schema-dir schema-files conn 1)
+    (load-files-from data-dir data-files conn (inc (count schema-files)))))

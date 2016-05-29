@@ -5,38 +5,27 @@
 
 (deftest tax-lots
   (testing "Creation"
-    (is (= (->TaxLot {:lot/action :Buy
-                      :lot/quantity 100M
-                     :lot/price 10M
-                     :lot/tx-cost 7.95M
-                     :lot/description "Buy 100 AAPL @ $10"
-                     :lot/trade-date (Date. 116 3 15)
-                     :lot/settlement-date (Date. 116 3 18)})
+    (is (= (->TaxLot 100M [{:domain/datatype :FinTrans}])
            {:domain/datatype :TaxLot
-            :lot/action :Buy
-            :lot/quantity 100M
-            :lot/price 10M
-            :lot/tx-cost 7.95M
-            :lot/description "Buy 100 AAPL @ $10"
-            :lot/trade-date (Date. 116 3 15)
-            :lot/settlement-date (Date. 116 3 18)
-            :lot/realized-gain 0M
-            :lot/unrealized-gain 0M
+            :tax-lot/quantity 100M
+            :tax-lot/transactions [{:domain/datatype :FinTrans}]
+            :tax-lot/realized-gain 0M,
+            :tax-lot/unrealized-gain 0M
             })))
   )
 
 (deftest equity-position
-  (let [instrument
+  (let [security
         {:db/id 10000
          :domain/datatype :Equity
-         :instrument/name "Apple Inc."
-         :instrument/type :instrument.type/equity
+         :security/name "Apple Inc."
+         :security/type :instrument.type/stock
          :equity/ticker :AAPL}
         ]
     (testing "Creation"
-      (is (= (->EquityPosition instrument )
+      (is (= (->EquityPosition security [] )
              {:domain/datatype        :EquityPosition
-              :position/instrument    instrument
+              :position/security    security
               :position/lots          []
               }
              )))))

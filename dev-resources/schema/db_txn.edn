@@ -17,6 +17,6 @@
   :db/ident              :db.tx/description
   :db/valueType          :db.type/string
   :db/cardinality        :db.cardinality/one
-  :db/doc                "String description of the sction"
+  :db/doc                "String description of the action"
   :db.install/_attribute :db.part/db}
  ]
