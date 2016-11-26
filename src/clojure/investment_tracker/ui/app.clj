@@ -1,4 +1,4 @@
-(ns investment-tracker.ui.main
+(ns investment-tracker.ui.app
   (:require [functional-vaadin.core :refer :all])
   (:import (com.vaadin.ui CustomComponent)
            (com.vaadin.navigator View)))
@@ -9,4 +9,6 @@
 
 (defn create-view []
   (proxy [CustomComponent View] [(view-def)]
-         (enter [event] (println "Entering main"))))
+         (enter [event]
+           ;(println "Entering main")
+           )))
