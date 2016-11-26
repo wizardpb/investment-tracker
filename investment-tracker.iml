@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/dev" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/dev-resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/clojure" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
@@ -25,7 +24,7 @@
     <orderEntry type="library" name="Leiningen: com.datomic/datomic-lucene-core:3.3.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.google.guava/guava:18.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.h2database/h2:1.3.171" level="project" />
-    <orderEntry type="library" name="Leiningen: com.prajnainc.functional-vaadin:0.3.0-snapshot" level="project" />
+    <orderEntry type="library" name="Leiningen: com.prajnainc/functional-vaadin:0.3.0-snapshot" level="project" />
     <orderEntry type="library" name="Leiningen: com.vaadin.external.flute/flute:1.3.0.gg2" level="project" />
     <orderEntry type="library" name="Leiningen: com.vaadin/vaadin-client-compiled:7.7.4" level="project" />
     <orderEntry type="library" name="Leiningen: com.vaadin/vaadin-sass-compiler:0.9.13" level="project" />

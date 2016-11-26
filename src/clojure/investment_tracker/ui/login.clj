@@ -2,7 +2,8 @@
   (:require [functional-vaadin.core :refer :all]
             [functional-vaadin.utils :refer :all])
   (:import (com.vaadin.ui CustomComponent Alignment)
-           (com.vaadin.navigator View)))
+           (com.vaadin.navigator View)
+           (com.vaadin.sass.internal.parser.function AlphaFunctionGenerator)))
 
 (defn- validate-user [username password]
   (= username "paul"))
@@ -16,10 +17,10 @@
   )
 
 (defn- view-def []
-  (vertical-layout {:sizeFull []}
-    (vertical-layout {:sizeUndefined [] :alignment Alignment/MIDDLE_CENTER}
-     (login-form {:id :login.form} do-login)
-     (label {:id :login.error-msg}))))
+  (vertical-layout {:sizeFull nil}
+    (vertical-layout {:sizeUndefined nil :alignment Alignment/MIDDLE_CENTER}
+      (login-form {:id :login.form} do-login)
+      (label {:id :login.error-msg :width "400px" }))))
 
 (defn create-view []
   (doto

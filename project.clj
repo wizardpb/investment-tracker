@@ -16,7 +16,7 @@
                  [com.vaadin/vaadin-server "7.7.4"]
                  [com.vaadin/vaadin-client-compiled "7.7.4"]
                  [com.vaadin/vaadin-themes "7.7.4"]
-                 [com.prajnainc.functional-vaadin "0.3.0-snapshot"]
+                 [com.prajnainc/functional-vaadin "0.3.0-snapshot"]
                  ]
   :repositories [["localrepo" "file:/Users/paul/localrepo"]]
   :profiles {:dev      {:aot          [investment-tracker.ui.UI]

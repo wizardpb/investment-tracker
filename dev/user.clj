@@ -7,6 +7,7 @@
             [investment-tracker.tools.core :refer :all]
             [investment-tracker.system :as system]
             [clojure.tools.namespace.repl :refer (refresh refresh-all)]
+            [clojure.java.classpath :as cp]
             )
   (:import (org.apache.commons.io FileUtils)
            (java.io File)))

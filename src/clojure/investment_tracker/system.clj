@@ -6,17 +6,14 @@
            (org.eclipse.jetty.server Server)))
 
 (defn jetty-server [ui-name resource-base]
-  (let [server (Server. 8080)
-        ^ServletContextHandler context (ServletContextHandler. ServletContextHandler/SESSIONS)]
-    (.setContextPath context "/")
-    (.setInitParameter context "UI" ui-name)
-    (.setInitParameter context "legacyPropertyToString" "true")
-    (.setResourceBase context resource-base)
-    (.setHandler server context)
-    (.addServlet context VaadinServlet "/*")
-    server
-    )
-  )
+  (doto (Server. 8080)
+    (.setHandler
+      (doto (ServletContextHandler. ServletContextHandler/SESSIONS)
+        (.setContextPath "/")
+        (.setInitParameter "UI" ui-name)
+        (.setInitParameter "legacyPropertyToString" "true")
+        (.setResourceBase resource-base)
+        (.addServlet VaadinServlet "/*")))))
 
 (defn system [resource-base]
   {:db     {:uri dbi/uri}

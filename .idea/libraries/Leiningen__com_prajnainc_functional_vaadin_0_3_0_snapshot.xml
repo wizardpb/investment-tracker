@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="Leiningen: com.prajnainc.functional-vaadin:0.3.0-snapshot">
+  <library name="Leiningen: com.prajnainc/functional-vaadin:0.3.0-snapshot">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/prajnainc/functional-vaadin/com.prajnainc.functional-vaadin/0.3.0-snapshot/com.prajnainc.functional-vaadin-0.3.0-snapshot.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/prajnainc/functional-vaadin/0.3.0-snapshot/functional-vaadin-0.3.0-snapshot.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
