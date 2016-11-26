@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.vaadin/vaadin-themes:7.7.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.7.4/vaadin-themes-7.7.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
