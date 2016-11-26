@@ -16,6 +16,13 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/settled?
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "True if the transaction has settled"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
   :db/ident :fin-trans/action
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
