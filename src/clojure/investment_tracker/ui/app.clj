@@ -8,7 +8,10 @@
     (label "Main View")))
 
 (defn create-view []
-  (proxy [CustomComponent View] [(view-def)]
-         (enter [event]
-           ;(println "Entering main")
-           )))
+  (doto
+    (proxy [CustomComponent View] [(view-def)]
+     (enter [event]
+       ;(println "Entering main")
+       ))
+    (.setSizeFull)
+    ))
