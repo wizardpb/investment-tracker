@@ -4,16 +4,22 @@
         investment-tracker.authentication)
   (:import (com.vaadin.ui CustomComponent Alignment UI)
            (com.vaadin.navigator View)
-           (com.vaadin.sass.internal.parser.function AlphaFunctionGenerator)))
+           (com.vaadin.sass.internal.parser.function AlphaFunctionGenerator)
+           (javax.security.auth.login AccountNotFoundException)))
+
+(defn- login-failed [ui]
+  (.setValue (componentNamed ::error-msg ui) "Login failed: incorrect username or password"))
 
 (defn- do-login [source event username password]
-  (println "Login: " source event username password)
   (let [ui (.getUI source)]
-    (if-let [user (validate-user username password)]
-      (do
-        (login-user user ui)
-        (.navigateTo (.getAppNavigator ui) "main"))
-      (.setValue (componentNamed :login.error-msg ui) "Login failed: incorrect username or password")))
+    (try
+      (if-let [user (validate-user username password)]
+       (do
+         (login-user user ui)
+         (.navigateTo (.getAppNavigator ui) "main"))
+       (login-failed ui))
+      (catch AccountNotFoundException e
+        (login-failed ui))))
   )
 
 
@@ -21,8 +27,8 @@
   "Return the definition for the login view" []
   (vertical-layout {:sizeFull nil}
     (vertical-layout {:sizeUndefined nil :alignment Alignment/MIDDLE_CENTER}
-      (login-form {:id :login.form} do-login)
-      (label {:id :login.error-msg :width "400px" }))))
+      (login-form {:id ::form} do-login)
+      (label {:id ::error-msg :width "400px" }))))
 
 (defn wire-up
   "Connect all events handlers"
