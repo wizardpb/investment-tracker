@@ -1,6 +1,5 @@
 (ns investment-tracker.ui.login
   (:use functional-vaadin.core
-        functional-vaadin.utils
         functional-vaadin.event-handling
         investment-tracker.authentication)
   (:import (com.vaadin.ui CustomComponent Alignment UI)
