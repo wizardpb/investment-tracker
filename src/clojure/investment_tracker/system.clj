@@ -1,21 +1,10 @@
 (ns investment-tracker.system
   (:require [investment-tracker.dbinit.core :as dbi]
-            [datomic.api :as d])
-  (:import (com.vaadin.server VaadinServlet)
-           (org.eclipse.jetty.servlet ServletContextHandler)
-           (org.eclipse.jetty.server Server)))
+            [datomic.api :as d]
+            [investment-tracker.server :refer :all])
+  )
 
-(defn jetty-server [ui-name resource-base]
-  (doto (Server. 8080)
-    (.setHandler
-      (doto (ServletContextHandler. ServletContextHandler/SESSIONS)
-        (.setContextPath "/")
-        (.setInitParameter "UI" ui-name)
-        (.setInitParameter "legacyPropertyToString" "true")
-        (.setResourceBase resource-base)
-        (.addServlet VaadinServlet "/*")))))
-
-(defn system [resource-base]
+(defn- make-system [resource-base]
   {:db     {:uri dbi/uri}
    :server (jetty-server "investment_tracker.ui.UI" resource-base)})
 
@@ -28,13 +17,30 @@
   (println "Stopping system" )
   (.stop (:server s)))
 
-(defn start [s]
+(defn- start-system [s]
   (-> s
-    ;(assoc-in [:db :conn] (d/connect (get-in s [:db :uri])))
+    (assoc-in [:db :conn] (d/connect (get-in s [:db :uri])))
     (start-server))
   )
 
-(defn stop [s]
+(defn- stop-system [s]
   (-> s
     (stop-server)
     (dissoc :db :conn)))
+
+(def system nil)
+
+(defn init []
+  (alter-var-root #'system (fn [_] (make-system "resources/public"))))
+
+(defn start []
+  (alter-var-root #'system start-system))
+
+(defn stop []
+  (alter-var-root #'system (fn [s] (when s (stop-system s)))))
+
+(defn go []
+  (init)
+  (start))
+
+

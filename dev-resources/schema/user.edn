@@ -1,0 +1,27 @@
+[
+
+ ;; User - allowed users of the system
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "The user id - primary key. Often the email address"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The users name"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/credentials
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The users credentials - an scrypt-encrypted, hex-encoded password with unique salt"
+  :db.install/_attribute :db.part/db}
+
+ ]

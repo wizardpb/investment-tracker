@@ -3,19 +3,19 @@
             [clojure.string :as str]
             [clojure.test :refer :all]
             [datomic.api :as d]
-            [investment-tracker.dbinit.core :as di]
-            [investment-tracker.tools.core :refer :all]
-            [investment-tracker.system :as system]
             [clojure.tools.namespace.repl :refer (refresh refresh-all)]
             [clojure.java.classpath :as cp]
-            )
+            [investment-tracker.dbinit.core :as di]
+            [investment-tracker.tools.core :refer :all])
+
+  (:use investment-tracker.db
+        investment-tracker.system
+        investment-tracker.authentication)
+
   (:import (org.apache.commons.io FileUtils)
            (java.io File)))
 
 (println "Loading user.clj")
-
-(defn connectdb []
-  (def conn (d/connect di/uri)))
 
 (comment
   (di/rebuild-db)
@@ -43,17 +43,3 @@
       (load-file fname))
     (apply run-tests (map test-ns-sym test-files))))
 
-(def system nil)
-
-(defn init []
-  (alter-var-root #'system (fn [_] (system/system "resources/public"))))
-
-(defn start []
-  (alter-var-root #'system system/start))
-
-(defn stop []
-  (alter-var-root #'system (fn [s] (when s (system/stop s)))))
-
-(defn go []
-  (init)
-  (start))

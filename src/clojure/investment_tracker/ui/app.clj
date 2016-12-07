@@ -4,14 +4,18 @@
            (com.vaadin.navigator View)))
 
 (defn- view-def []
-  (vertical-layout
-    (label "Main View")))
+  (vertical-layout {:spacing true :margin true}
+    (button {:id ::logout :caption "Logout"})))
 
-(defn create-view []
+(defn wire-up
+  "Wire up all application event handlers"
+  [ui]
+  )
+
+(defn create-view
+  "Create the application view" []
   (doto
     (proxy [CustomComponent View] [(view-def)]
-     (enter [event]
-       ;(println "Entering main")
-       ))
+     (enter [event]))
     (.setSizeFull)
     ))

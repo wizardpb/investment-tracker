@@ -14,6 +14,11 @@
               :state _appState)
   )
 
+(defn- wire-up
+  "Wire up the event handlers for this UI"
+  [ui]
+  (login/wire-up ui))
+
 (defn -init-state []
   [[] (atom {})])
 
@@ -33,7 +38,8 @@
         (.addView nav "" (login/create-view))
         (.addView nav "main" (app/create-view))
         (panel)))
+    (wire-up this)
     (.setAppState this [:navigator] nav)
-    (.navigateTo nav "")
+    (.navigateTo nav (login/get-initial-view))
     )
   )

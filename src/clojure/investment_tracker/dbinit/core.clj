@@ -8,10 +8,10 @@
 (def data-dir "dev-resources/schema/data/")
 
 (def schema-files
-  ["system.edn" "account.edn" "fin_trans.edn" "security.edn" "position.edn"])
+  ["system.edn" "account.edn" "fin_trans.edn" "security.edn" "position.edn" "user.edn"])
 
 (def data-files
-  ["accounts.edn"])
+  ["accounts.edn" "users.edn"])
 
 (defn add-tx-attributes [conn]
   @(d/transact
