@@ -1,14 +1,20 @@
 (ns investment-tracker.ui.app
-  (:require [functional-vaadin.core :refer :all])
+  (:use functional-vaadin.core
+        functional-vaadin.event-handling
+        investment-tracker.ui.menu-bar)
   (:import (com.vaadin.ui CustomComponent)
            (com.vaadin.navigator View)))
 
+
+(defn- clear-user [ui]
+  (.setAttribute (.getSession ui) "user" nil))
+
 (defn- view-def []
-  (vertical-layout {:spacing true :margin true}
-    (button {:id ::logout :caption "Logout"})))
+  (vertical-layout
+    (my-menu-bar)))
 
 (defn wire-up
-  "Wire up all application event handlers"
+  "Connect all events handlers"
   [ui]
   )
 

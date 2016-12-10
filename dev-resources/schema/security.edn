@@ -13,7 +13,7 @@
   :db/ident :security/type
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "A securitys type enum value"
+  :db/doc "A security type enum value"
   :db.install/_attribute :db.part/db}
 
  ;; Security type enums

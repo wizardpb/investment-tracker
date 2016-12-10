@@ -1,6 +1,14 @@
 [
  ;; Details of a financial transaction
- 
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "The transaction id - primary key. Format is '<acct-id>-<timestamp>'"
+  :db.install/_attribute :db.part/db}
+
  {:db/id #db/id[:db.part/db]
   :db/ident :fin-trans/trade-date
   :db/valueType :db.type/instant
@@ -16,13 +24,6 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :fin-trans/settled?
-  :db/valueType :db.type/boolean
-  :db/cardinality :db.cardinality/one
-  :db/doc "True if the transaction has settled"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
   :db/ident :fin-trans/action
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
@@ -32,6 +33,7 @@
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/buy]
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/sell]
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/dividend]
+ [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/interest]
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/split]
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/cash-in]
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/cash-out]
@@ -39,10 +41,17 @@
  [:db/add #db/id[:db.part/user] :db/ident :fin-trans.type/shares-out]
 
  {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/security
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The security transacted"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
   :db/ident :fin-trans/quantity
   :db/valueType :db.type/bigdec
   :db/cardinality :db.cardinality/one
-  :db/doc "The quantity bought or sold. Buy is positive, sell is negative"
+  :db/doc "The quantity transacted. For cash transactions (dividend, cash-in/out, etc.) security is the currency, quantity is the amount and price is 1"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
@@ -56,7 +65,14 @@
   :db/ident :fin-trans/tx-cost
   :db/valueType :db.type/bigdec
   :db/cardinality :db.cardinality/one
-  :db/doc "The cost of the financial transaction. Positive is a cost, negative a refund. Basis is thus (quantity * price) + cost"
+  :db/doc "The cost of the financial transaction."
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/split-ration
+  :db/valueType :db.type/bigdec
+  :db/cardinality :db.cardinality/one
+  :db/doc "Split ratio. The amount 1 share is split into e.g 2-for-1 split would have a value of 2.0"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]

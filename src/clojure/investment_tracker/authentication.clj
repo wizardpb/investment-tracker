@@ -1,22 +1,23 @@
 (ns investment-tracker.authentication
   "All authentication and authorization functions"
   (:require [clojurewerkz.scrypt.core :as crypt]
-            [buddy.core.nonce :as nonce]
-            [buddy.core.codecs :as codec]
-            [investment-tracker.db :refer :all]
+            [investment-tracker.system :as sys]
             )
   (:import (javax.security.auth.login AccountNotFoundException)))
 
-(defn user-logged-in? [ui]
-  (.getAttribute (.getSession ui) "user"))
-
-(defn validate-user [username credential]
-  (if-let [user (get-user username)]
+(defn validate-user [user username credential]
+  (if user
     (and (crypt/verify credential (:user/credentials user)) user)
     (throw (AccountNotFoundException. username))))
 
-(defn login-user [user ui]
-  (.setAttribute (.getSession ui) "user" user))
+(defn login [user]
+  (sys/system-assoc [:current-user] user))
 
-(defn clear-user [ui]
-  (.setAttribute (.getSession ui) "user" nil))
+(defn logout []
+  (sys/system-dissoc [:current-user]))
+
+(defn current-user []
+  (get-in sys/system [:current-user]))
+
+(defn current-user-id []
+  (:user/id (current-user)))

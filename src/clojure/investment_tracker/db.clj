@@ -1,10 +1,34 @@
 (ns investment-tracker.db
   "Functions to interface with the database"
   (:require [datomic.api :as d]
-            [investment-tracker.system :as sys]))
+            [investment-tracker.system :as sys]
+            [investment-tracker.authentication :as auth]))
 
 (defn dbconn []
   (get-in sys/system [:db :conn]))
+
+(defn make-txn [attrs]
+  [(merge {:db/id #db/id[:db.part/tx]} attrs)])
+
+(defn make-txn-dated [date attrs]
+  (make-txn {:db/txInstant date}))
+
+(defn ->Txn
+  ([date type actor desc contents]
+   (let [details {:db.tx/type        type
+                  :db.tx/actor-id    actor
+                  :db.tx/description desc}]
+     (concat
+       (if date
+         (make-txn-dated date details)
+         (make-txn details))
+       contents)))
+  ([actor type desc contents] (->Txn nil actor type desc contents))
+  ([desc contents] (->Txn nil :UserTxn (auth/current-user-id) desc contents))
+  ([contents] (->Txn nil :UserTxn (auth/current-user-id) "" contents)))
+
+(defn ->Entity [attrs]
+  (merge {:db/id #db/id[:db.part/user]} attrs))
 
 (defn getdb []
   (d/db (dbconn)))

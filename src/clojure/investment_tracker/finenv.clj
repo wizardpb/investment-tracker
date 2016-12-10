@@ -47,12 +47,13 @@
                         (fn [k]
                           [k (BigDecimal. (k quote-map))])
                         [:Open :High :Low :Close]))])]
-          (into {} (map parse-ticker json-quotes)))
+    (into {} (map parse-ticker json-quotes)))
   )
 
 (defn lookup-yahoo-historical-prices
   [date equities]
-  (let [response (client/get (format-yahoo-historical-url equities date) {:as :json})
+  (let [query (format-yahoo-historical-url equities date)
+        response (client/get query {:as :json})
         quotes (get-in response [:body :query :results :quote])]
     (parse-yahoo-historical-json
       (if (= 1 (get-in response [:body :query :count])) [quotes] quotes))))

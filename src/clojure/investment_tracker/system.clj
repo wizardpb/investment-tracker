@@ -1,11 +1,12 @@
 (ns investment-tracker.system
-  (:require [investment-tracker.dbinit.core :as dbi]
-            [datomic.api :as d]
+  (:require [datomic.api :as d]
             [investment-tracker.server :refer :all])
   )
 
+(def db-uri "datomic:dev://localhost:4334/investment-tracker")
+
 (defn- make-system [resource-base]
-  {:db     {:uri dbi/uri}
+  {:db     {:uri db-uri}
    :server (jetty-server "investment_tracker.ui.UI" resource-base)})
 
 (defn- start-server [s]
@@ -38,6 +39,13 @@
 
 (defn stop []
   (alter-var-root #'system (fn [s] (when s (stop-system s)))))
+
+(defn system-assoc [keys value]
+  (alter-var-root #'system (fn [s] (assoc-in s keys value)))
+  )
+
+(defn system-dissoc [keys]
+  (alter-var-root #'system (fn [s] (apply dissoc s keys))))
 
 (defn go []
   (init)

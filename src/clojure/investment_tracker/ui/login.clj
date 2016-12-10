@@ -1,7 +1,8 @@
 (ns investment-tracker.ui.login
+  (:require [investment-tracker.authentication :as auth]
+            [investment-tracker.db :as db])
   (:use functional-vaadin.core
-        functional-vaadin.event-handling
-        investment-tracker.authentication)
+        functional-vaadin.event-handling)
   (:import (com.vaadin.ui CustomComponent Alignment UI)
            (com.vaadin.navigator View)
            (com.vaadin.sass.internal.parser.function AlphaFunctionGenerator)
@@ -10,18 +11,28 @@
 (defn- login-failed [ui]
   (.setValue (componentNamed ::error-msg ui) "Login failed: incorrect username or password"))
 
+(defn- clear-error-msg [ui]
+  (.setValue (componentNamed ::error-msg ui) ""))
+
+(defn- user-logged-in? [ui]
+  (.getAttribute (.getSession ui) "user"))
+
+(defn- login-user [user ui]
+  (.setAttribute (.getSession ui) "user" user)
+  (auth/login user))
+
 (defn- do-login [source event username password]
   (let [ui (.getUI source)]
     (try
-      (if-let [user (validate-user username password)]
+      (if-let [user (auth/validate-user (db/get-user username) username password)]
        (do
+         (clear-error-msg ui)
          (login-user user ui)
-         (.navigateTo (.getAppNavigator ui) "main"))
+         (.showAppView ui))
        (login-failed ui))
       (catch AccountNotFoundException e
         (login-failed ui))))
   )
-
 
 (defn- view-def
   "Return the definition for the login view" []
@@ -32,11 +43,7 @@
 
 (defn wire-up
   "Connect all events handlers"
-  [ui]
-  (onClick (componentNamed :app/logout ui)
-    (fn [src event _]
-      (clear-user ui)
-      (.navigateTo (.getAppNavigator ui) ""))))
+  [ui])
 
 (defn get-initial-view
   "Return the name of the initial view of the app. Depends on if the user is logged in" []

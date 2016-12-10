@@ -3,23 +3,22 @@
  ;; Account - a collection of Positions
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :account/name
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/doc "The account name"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :account/id
+  :db/ident :inv-account/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "The account id - primary key"
   :db.install/_attribute :db.part/db}
 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :inv-account/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "The account name"
+  :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :account/transactions
+  :db/ident :inv-account/transactions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true                                      ;Accounts own the transactions
@@ -27,7 +26,7 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :account/positions
+  :db/ident :inv-account/positions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true

@@ -9,7 +9,9 @@
               :methods [
                         [getAppState [java.util.List] Object]
                         [setAppState [java.util.List Object] void]
-                        [getAppNavigator [] com.vaadin.navigator.Navigator]]
+                        [getAppNavigator [] com.vaadin.navigator.Navigator]
+                        [showLoginView [] void]
+                        [showAppView [] void]]
               :init init-state
               :state _appState)
   )
@@ -17,7 +19,8 @@
 (defn- wire-up
   "Wire up the event handlers for this UI"
   [ui]
-  (login/wire-up ui))
+  (login/wire-up ui)
+  (app/wire-up ui))
 
 (defn -init-state []
   [[] (atom {})])
@@ -30,6 +33,12 @@
 
 (defn -getAppNavigator [this]
   (.getAppState this [:navigator]))
+
+(defn -showLoginView [this]
+  (.navigateTo (.getAppNavigator this) ""))
+
+(defn -showAppView [this]
+  (.navigateTo (.getAppNavigator this) "main"))
 
 (defn -init [this request]
   (let [nav (com.vaadin.navigator.Navigator. this this)]

@@ -5,4 +5,8 @@
         investment-tracker.system
         investment-tracker.authentication))
 
+(defmulti value
+  "Value some domain object - generally an Account, Positon or Lot"
+  :domain/datatype )
+
 

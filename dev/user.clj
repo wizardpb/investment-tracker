@@ -6,7 +6,8 @@
             [clojure.tools.namespace.repl :refer (refresh refresh-all)]
             [clojure.java.classpath :as cp]
             [investment-tracker.dbinit.core :as di]
-            [investment-tracker.tools.core :refer :all])
+            [investment-tracker.tools.core :refer :all]
+            [investment-tracker.finenv :as env])
 
   (:use investment-tracker.db
         investment-tracker.system
@@ -20,6 +21,12 @@
 (comment
   (di/rebuild-db)
   )
+
+(defn db-conn []
+  (get-in system [:db :conn]))
+
+(defn db []
+  (d/db (db-conn)))
 
 (def test-dir "test/")
 
