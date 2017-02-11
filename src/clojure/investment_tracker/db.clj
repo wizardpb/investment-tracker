@@ -4,9 +4,6 @@
             [investment-tracker.system :as sys]
             [investment-tracker.authentication :as auth]))
 
-(defn dbconn []
-  (get-in sys/system [:db :conn]))
-
 (defn make-txn [attrs]
   [(merge {:db/id #db/id[:db.part/tx]} attrs)])
 
@@ -31,7 +28,7 @@
   (merge {:db/id #db/id[:db.part/user]} attrs))
 
 (defn getdb []
-  (d/db (dbconn)))
+  (d/db (get-in sys/system [:db :conn])))
 
 (defn get-user [user-id]
   (d/entity (getdb) [:user/id user-id]))

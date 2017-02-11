@@ -1,12 +1,11 @@
 (ns investment-tracker.system
   (:require [datomic.api :as d]
+            [investment-tracker.config :as conf]
             [investment-tracker.server :refer :all])
   )
 
-(def db-uri "datomic:dev://localhost:4334/investment-tracker")
-
 (defn- make-system [resource-base]
-  {:db     {:uri db-uri}
+  {:db     {:uri (:db-uri conf/settings)}
    :server (jetty-server "investment_tracker.ui.UI" resource-base)})
 
 (defn- start-server [s]

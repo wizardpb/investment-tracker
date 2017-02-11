@@ -7,7 +7,7 @@
 
 (defn validate-user [user username credential]
   (if user
-    (and (crypt/verify credential (:user/credentials user)) user)
+    (and (crypt/verify credential (:investment-tracker.user/credentials user)) user)
     (throw (AccountNotFoundException. username))))
 
 (defn login [user]

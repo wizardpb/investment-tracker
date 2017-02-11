@@ -2,36 +2,28 @@
  ;; Tax Lots
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :tax-lot/id
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/unique :db.unique/identity
-  :db/doc "The lot id - primary key, form is '<acct-id>-<security-code>-<uuid>'"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :tax-lot/qty
+  :db/ident :investment-tracker.tax-lot/quantity
   :db/valueType :db.type/bigdec
   :db/cardinality :db.cardinality/one
   :db/doc "Quantity. Signed value, increase or decrease"
   :db.install/_attribute :db.part/db}
 
  ;{:db/id #db/id[:db.part/db]
- ; :db/ident :tax-lot/realized-gain
+ ; :db/ident :investment-tracker.tax-lot/realized-gain
  ; :db/valueType :db.type/bigdec
  ; :db/cardinality :db.cardinality/one
  ; :db/doc "Realized gain of a sold lot"
  ; :db.install/_attribute :db.part/db}
  ;
  ;{:db/id #db/id[:db.part/db]
- ; :db/ident :tax-lot/unrealized-gain
+ ; :db/ident :investment-tracker.tax-lot/unrealized-gain
  ; :db/valueType :db.type/bigdec
  ; :db/cardinality :db.cardinality/one
  ; :db/doc "Unrealized gain of an open position. As of position close date"
  ; :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :tax-lot/transactions
+  :db/ident :investment-tracker.tax-lot/transactions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Financiall transactions associated with this lot"

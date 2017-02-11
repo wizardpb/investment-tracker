@@ -3,22 +3,14 @@
  ;; Database entity attributes for holding and valuing positions
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :position/id
-  :db/valueType :db.type/string
-  :db/cardinality :db.cardinality/one
-  :db/unique :db.unique/identity
-  :db/doc "The position id - primary key, form is '<acct-id>-<security-code>'"
-  :db.install/_attribute :db.part/db}
-
- {:db/id #db/id[:db.part/db]
-  :db/ident :position/security
+  :db/ident :investment-tracker.position/security
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "The security held in the position"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :position/lots
+  :db/ident :investment-tracker.position/lots
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true                                      ;Position owns it's lots

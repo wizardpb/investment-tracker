@@ -30,24 +30,24 @@
     (let [date (Date. 116 0 31)
           equities [:YHOO :AAPL]]
       (is (=
-            (format-yahoo-historical-url equities date)
+            (build-url equities date)
             (str "http://query.yahooapis.com/v1/public/yql?q="
-                 (str "select%20*%20from%20yahoo.finance.historicaldata%20"
-                      "where%20symbol%20in%20(\"YHOO\",\"AAPL\")%20"
-                      "and%20startDate%20=%20\"2016-01-31\"%20"
-                      "and%20endDate%20=%20\"2016-01-31\"")
+                 (str "select * from yahoo.finance.historicaldata "
+                      "where symbol in (\"YHOO\",\"AAPL\") "
+                      "and startDate = \"2016-01-31\" "
+                      "and endDate = \"2016-01-31\"")
                  "&env=store://datatables.org/alltableswithkeys"
                  "&format=json")))))
   (testing "JSON parsing"
     (is (=
-          (parse-yahoo-historical-json [{:Symbol "YHOO",
-                                :Date            "2016-04-13",
-                                :Open            "36.939999",
-                                :High            "37.349998",
-                                :Low             "36.900002",
-                                :Close           "37.310001",
-                                :Volume          "17158700",
-                                :Adj_Close       "37.310001"}
+          (parse-response [{:Symbol        "YHOO",
+                                :Date      "2016-04-13",
+                                :Open      "36.939999",
+                                :High      "37.349998",
+                                :Low       "36.900002",
+                                :Close     "37.310001",
+                                :Volume    "17158700",
+                                :Adj_Close "37.310001"}
                                {:Symbol    "AAPL",
                                 :Date      "2016-04-13",
                                 :Open      "110.800003",

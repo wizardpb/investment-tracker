@@ -1,0 +1,12 @@
+[
+ {:db/id #db/id[:db.part/user]
+  :investment-tracker.security/name "Apple, Inc."
+  :investment-tracker.security/type :Equity
+  :investment-tracker.security/ticker :AAPL
+  }
+ {:db/id #db/id[:db.part/user]
+  :investment-tracker.security/name "Berkshire Hathaway B"
+  :investment-tracker.security/type :Equity
+  :investment-tracker.security/ticker :BRK-B
+  }
+ ]

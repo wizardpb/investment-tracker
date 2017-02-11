@@ -3,7 +3,7 @@
  ;; User - allowed users of the system
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :user/id
+  :db/ident :investment-tracker.user/id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
@@ -11,14 +11,14 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :user/name
+  :db/ident :investment-tracker.user/name
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "The users name"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :user/credentials
+  :db/ident :investment-tracker.user/credentials
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "The users credentials - an scrypt-encrypted, hex-encoded password with unique salt"
