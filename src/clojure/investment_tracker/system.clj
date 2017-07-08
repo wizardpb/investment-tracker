@@ -8,6 +8,12 @@
   {:db     {:uri (:db-uri conf/settings)}
    :server (jetty-server "investment_tracker.ui.UI" resource-base)})
 
+(defn- load-custodians [s]
+  (let [db (d/db (get-in s [:db :conn]))
+        custs (apply d/pull db "[*]"
+                (d/q '[:find [?c ...] :where [?c :custodian/name]] db))]
+    (assoc s :custodians custs)))
+
 (defn- start-server [s]
   (println "Starting system")
   ;(.start (:server s))
@@ -20,6 +26,7 @@
 (defn- start-system [s]
   (-> s
     (assoc-in [:db :conn] (d/connect (get-in s [:db :uri])))
+    (load-custodians)
     (start-server))
   )
 

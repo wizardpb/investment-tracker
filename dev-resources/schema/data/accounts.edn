@@ -1,27 +1,33 @@
 [
- ;TRADITIONAL IRA 142365483
- ;ROTH IRA 164738611
- ;ROLLOVER IRA 207246492
- ;PROFIT SHARING KEOGH 344897620
- ;SEP-IRA 221259686
+ {:db/id "fidelity"
+  :custodian/name     "Fidelity"
+  :custodian/accounts [
+                       ;TRADITIONAL IRA 142365483
+                       ;ROTH IRA 164738611
+                       ;ROLLOVER IRA 207246492
+                       ;PROFIT SHARING KEOGH 344897620
+                       ;SEP-IRA 221259686
 
- {:db/id #db/id[:db.part/user]
-  :account/name "TRADITIONAL IRA"
-  :account/custodian-id "142365483"}
+                       {:db/id                #db/id[:db.part/user]
+                        :account/name         "TRADITIONAL IRA"
+                        :account/custodian-id "142365483"}
 
- {:db/id #db/id[:db.part/user]
-  :account/name "ROTH IRA"
-  :account/custodian-id "164738611"}
+                       {:db/id                #db/id[:db.part/user]
+                        :account/name         "ROTH IRA"
+                        :account/custodian-id "164738611"}
 
- {:db/id #db/id[:db.part/user]
-  :account/name "ROLLOVER IRA"
-  :account/custodian-id "207246492"}
+                       {:db/id                #db/id[:db.part/user]
+                        :account/name         "ROLLOVER IRA"
+                        :account/custodian-id "207246492"}
 
- {:db/id #db/id[:db.part/user]
-  :account/name "SEP-IRA"
-  :account/custodian-id "221259686"}
+                       {:db/id                #db/id[:db.part/user]
+                        :account/name         "SEP-IRA"
+                        :account/custodian-id "221259686"}
 
- {:db/id #db/id[:db.part/user]
-  :account/name "PROFIT SHARING KEOGH"
-  :account/custodian-id "344897620"}
+                       {:db/id                #db/id[:db.part/user]
+                        :account/name         "PROFIT SHARING KEOGH"
+                        :account/custodian-id "344897620"}
+                       ]
+  }
+
  ]

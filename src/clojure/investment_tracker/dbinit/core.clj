@@ -13,10 +13,10 @@
 (def data-dir "dev-resources/schema/data/")
 
 (def schema-files
-  ["account.edn" "fin_trans.edn" "security.edn" "position.edn" "user.edn"])
+  [ "custodian.edn" "account.edn" "fin_trans.edn" "security.edn" "position.edn" "user.edn" "tax_lot.edn"])
 
 (def data-files
-  ["accounts.edn" "users.edn" "securities.edn"])
+  [ "accounts.edn" "users.edn" "securities.edn"])
 
 (defn add-tx-attributes [conn]
   @(d/transact
@@ -66,5 +66,4 @@
   (let [conn (d/connect (:db-uri conf/settings))]
     (add-tx-attributes conn)
     (load-files-from schema-dir schema-files conn 1)
-    (load-files-from data-dir data-files conn (inc (count schema-files))))
-  "Done")
+    (load-files-from data-dir data-files conn (inc (count schema-files)))))

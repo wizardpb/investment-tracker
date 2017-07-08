@@ -16,13 +16,17 @@
         investment-tracker.finenv
         investment-tracker.security
         investment-tracker.account
+        investment-tracker.position
         )
 
   (:import (org.apache.commons.io FileUtils)
            (java.io File)))
 
+(defn conn []
+  (get-in sys/system [:db :conn]))
+
 (defn db []
-  (d/db (get-in sys/system [:db :conn])))
+  (d/db (conn)))
 
 (def test-dir "test/")
 
