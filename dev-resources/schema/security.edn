@@ -1,21 +1,21 @@
 [
 
  {:db/id #db/id[:db.part/db]
-  :db/ident  :investment-tracker.security/name
+  :db/ident  :security/name
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "An security's name"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident  :investment-tracker.security/type
+  :db/ident  :security/type
   :db/valueType :db.type/keyword
   :db/cardinality :db.cardinality/one
   :db/doc "A security type - a keyword"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident  :investment-tracker.security/cusip
+  :db/ident  :security/cusip
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
@@ -23,7 +23,7 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident  :investment-tracker.security/isin
+  :db/ident  :security/isin
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
@@ -31,7 +31,7 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :investment-tracker.security/ticker
+  :db/ident :security/ticker
   :db/valueType :db.type/keyword
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity

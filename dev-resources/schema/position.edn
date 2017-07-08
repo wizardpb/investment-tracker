@@ -3,14 +3,14 @@
  ;; Database entity attributes for holding and valuing positions
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :investment-tracker.position/security
+  :db/ident :position/security
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "The security held in the position"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :investment-tracker.position/lots
+  :db/ident :position/lots
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/isComponent true                                      ;Position owns it's lots

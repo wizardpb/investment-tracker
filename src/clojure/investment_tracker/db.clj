@@ -32,3 +32,15 @@
 
 (defn get-user [user-id]
   (d/entity (getdb) [:user/id user-id]))
+
+(defn make-record [rec-fn entity]
+  (rec-fn (into {} (map (fn [[k v]] [(keyword (name k)) v]) entity))))
+
+(defn get-security [ident]
+  (d/pull (getdb) "[*]" ident))
+
+(defn get-account [custodian-id]
+  (d/pull (getdb) "[*]" [:account/custodian-id custodian-id]))
+
+(defn get-all-accounts []
+  (flatten (d/q "[:find (pull ?e [*]) :where [?e :account/custodian-id]]" (getdb))))

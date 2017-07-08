@@ -10,7 +10,7 @@
 
 (defn- start-server [s]
   (println "Starting system")
-  (.start (:server s))
+  ;(.start (:server s))
   s)
 
 (defn- stop-server [s]

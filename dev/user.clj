@@ -6,36 +6,23 @@
             [datomic.api :as d]
             [clojure.tools.namespace.repl :refer (refresh refresh-all)]
             [clojure.java.classpath :as cp]
-            [investment-tracker.dbinit.core :as di]
-            [investment-tracker.tools.core :refer :all]
             [investment-tracker.config :as c]
-            )
+            [investment-tracker.db :as db]
+            [investment-tracker.dbinit.core :as di]
+            [investment-tracker.system :as sys])
 
-  (:use investment-tracker.db
-        investment-tracker.system
+  (:use investment-tracker.system
         investment-tracker.authentication
         investment-tracker.finenv
+        investment-tracker.security
+        investment-tracker.account
         )
 
   (:import (org.apache.commons.io FileUtils)
            (java.io File)))
 
-(println "Loading user.clj")
-
-
-(defn db-sys-conn []
-  (get-in system [:db :conn]))
-
-(comment
-  (di/rebuild-db)
-  (def conn (db-sys-conn))
-  (def conn (d/connect (:db-uri c/settings)))
-  )
-
-(def conn nil)
-
 (defn db []
-  (d/db conn))
+  (d/db (get-in sys/system [:db :conn])))
 
 (def test-dir "test/")
 

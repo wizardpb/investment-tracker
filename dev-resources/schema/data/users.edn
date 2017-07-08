@@ -1,6 +1,6 @@
 [
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.user/id "paul@prajnainc.com"
-  :investment-tracker.user/name "Paul"
-  :investment-tracker.user/credentials "$s0$e0801$Q0SFKOvHn0fJa0NE6huqIQ==$0OzB10EWKVk+E4nhqanwdodRYOAaBevFmDcKYJUI6Kg="}
+  :user/id "paul@prajnainc.com"
+  :user/name "Paul"
+  :user/credentials "$s0$e0801$Q0SFKOvHn0fJa0NE6huqIQ==$0OzB10EWKVk+E4nhqanwdodRYOAaBevFmDcKYJUI6Kg="}
  ]

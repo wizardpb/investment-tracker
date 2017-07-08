@@ -6,22 +6,22 @@
  ;SEP-IRA 221259686
 
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.account/name "TRADITIONAL IRA"
-  :investment-tracker.account/id "142365483"}
+  :account/name "TRADITIONAL IRA"
+  :account/custodian-id "142365483"}
 
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.account/name "ROTH IRA"
-  :investment-tracker.account/id "164738611"}
+  :account/name "ROTH IRA"
+  :account/custodian-id "164738611"}
 
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.account/name "ROLLOVER IRA"
-  :investment-tracker.account/id "207246492"}
+  :account/name "ROLLOVER IRA"
+  :account/custodian-id "207246492"}
 
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.account/name "SEP-IRA"
-  :investment-tracker.account/id "221259686"}
+  :account/name "SEP-IRA"
+  :account/custodian-id "221259686"}
 
  {:db/id #db/id[:db.part/user]
-  :investment-tracker.account/name "PROFIT SHARING KEOGH"
-  :investment-tracker.account/id "344897620"}
+  :account/name "PROFIT SHARING KEOGH"
+  :account/custodian-id "344897620"}
  ]
