@@ -2,11 +2,19 @@
  ;; Details of a financial transaction
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :fin-trans/id
+  :db/ident :fin-trans/txn-id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
   :db/doc "The transaction id - primary key. Format is '<acct-id>-<squuid>'"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :fin-trans/custodian-id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/unique :db.unique/identity
+  :db/doc "The transaction id used by the custodian"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]

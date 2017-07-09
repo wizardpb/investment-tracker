@@ -28,6 +28,12 @@
 (defn db []
   (d/db (conn)))
 
+(defn rebuild-db []
+  (stop)
+  (let [rb (di/rebuild-db)]
+    (go)
+    rb))
+
 (def test-dir "test/")
 
 (defn test-ns-sym [fname]

@@ -10,7 +10,7 @@
 
 (def secuirty-files ["NASDAQ.csv" "NYSE.csv"])
 (def schema-dir "dev-resources/schema/")
-(def data-dir "dev-resources/schema/data/")
+(def data-dir "dev-resources/data/")
 
 (def schema-files
   [ "custodian.edn" "account.edn" "fin_trans.edn" "security.edn" "position.edn" "user.edn" "tax_lot.edn"])
@@ -19,15 +19,17 @@
   [ "accounts.edn" "users.edn" "securities.edn"])
 
 (defn add-tx-attributes [conn]
+  (println "Adding txn attributes ...")
   @(d/transact
      conn
-     (db/make-txn-dated (Date. 500) (read-string (slurp (str schema-dir "db_txn.edn")))))
+     (vec (concat (db/make-txn (Date. 500) {}) (read-string (slurp (str schema-dir "db_txn.edn"))))))
   )
 
 (defn load-edn-file [conn index dir fname]
-  (let [schema (read-string (slurp (str dir fname)))]
+  (let [schema (read-string (slurp (str dir fname)))
+        tx-data (db/->Txn (Date. ^Long (* 1000 index)) :SchemaCreate "Setup" fname schema)]
     (println fname "...")
-    @(d/transact conn (db/->Txn (Date. (* 1000 index)) :SchemaCreate "Setup" fname schema))))
+    @(d/transact conn tx-data)))
 
 
 (defn load-files-from [dir files conn base-index]
@@ -64,6 +66,9 @@
   (d/delete-database (:db-uri conf/settings))
   (d/create-database (:db-uri conf/settings))
   (let [conn (d/connect (:db-uri conf/settings))]
-    (add-tx-attributes conn)
-    (load-files-from schema-dir schema-files conn 1)
-    (load-files-from data-dir data-files conn (inc (count schema-files)))))
+    (reduce +
+      (map #(count (:tempids %))
+       (concat
+         (add-tx-attributes conn)
+         (load-files-from schema-dir schema-files conn 1)
+         (load-files-from data-dir data-files conn (inc (count schema-files))))))))

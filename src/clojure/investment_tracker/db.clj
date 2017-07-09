@@ -4,37 +4,43 @@
             [investment-tracker.system :as sys]
             [investment-tracker.authentication :as auth]))
 
-(defn make-txn [attrs]
-  [(merge {:db/id "datomic.tx"} attrs)])
+(defprotocol Updateable
+  (ref-attribute [this rec]
+    "Return a (reverse) attribute that refers to the rec type on this")
+  (update-map [this] [this ref] [this keys ref]
+    "Return an map that saves the given keys of this record plus an attribute to add it to the container. If no keys
+    are given, the value of update-keys is used. An optional ref adds an attribute to connect this to the
+    ref holder")
+  )
 
-(defn make-txn-dated [date attrs]
-  (make-txn {:db/txInstant date}))
+(defn make-txn [date attrs]
+  [(merge (if date {:db/id "datomic.tx" :db/txInstant date} {:db/id "datomic.tx"}) attrs)])
 
 (defn ->Txn
   ([date type actor desc contents]
    (let [details {:db.tx/type        type
                   :db.tx/actor-id    (if actor actor "")
                   :db.tx/description desc}]
-     (vec
-       (concat
-        (if date
-          (make-txn-dated date details)
-          (make-txn details))
-        contents))))
+     (vec (concat (make-txn date details) contents))))
   ([actor type desc contents] (->Txn nil actor type desc contents))
   ([desc contents] (->Txn nil :UserTxn (auth/current-user-id) desc contents))
   ([contents] (->Txn nil :UserTxn (auth/current-user-id) "" contents)))
 
-(defn db-key [ns key]
-  (keyword (str (name ns) "/" (name key))))
+(defn db-key [rec key]
+  (let [ns (.toLowerCase (.getSimpleName (class rec)))]
+    (keyword (str (name ns) "/" (name key)))))
 
-(defn db-ns [rec]
-  (.toLowerCase (.getSimpleName (class rec))))
-
-(defn ->Entity [rec]
-  (into {:db/id "tempId"}
-    (map #(vector (db-key (db-ns rec) %) (% rec))
-      (filter #(get rec %) (keys rec)))))
+(defn entity-map
+  "Return a map of values that can be transacted to save all values in this record. Adds a tempId if the record is new,
+  filters any nil attributes, and adds an entry to add it to ref if present"
+  [rec keys ref]
+  (let [entity-id (if-let [id (:id rec)] id "tempId")]
+    (merge
+     (if ref (ref-attribute ref rec) {})
+     (into {:db/id entity-id}
+       (map
+         #(vector (db-key rec %) (% rec))
+         (filter #(get rec %) keys))))))
 
 (defn getdb []
   (d/db (get-in sys/system [:db :conn])))
