@@ -18,5 +18,5 @@
 (defn db->Security [entity]
   (db/make-record map->Security entity))
 
-(defn get-security [ident]
-  (db->Security (db/get-security ident)))
+(defn get-security [ticker]
+  (db->Security (db/get-entity [:security/ticker ticker])))

@@ -11,12 +11,14 @@
             [investment-tracker.dbinit.core :as di]
             [investment-tracker.system :as sys])
 
-  (:use investment-tracker.system
+  (:use investment-tracker.protocols
+        investment-tracker.system
         investment-tracker.authentication
         investment-tracker.finenv
         investment-tracker.security
         investment-tracker.account
         investment-tracker.position
+        investment-tracker.tax-lot
         )
 
   (:import (org.apache.commons.io FileUtils)

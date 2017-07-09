@@ -1,18 +1,13 @@
 (ns investment-tracker.tax-lot
-  (:require [clojure.spec :as s]
-            [investment-tracker.db :as db]))
+  (:require [investment-tracker.db :as db])
+  (:use investment-tracker.protocols))
 
-(s/def ::quantity bigdec?)
-(s/def ::transactions coll?)
-
-(s/def ::tax-lot (s/keys :req [::quantity ::transactions]))
-
-(defrecord TaxLot [quantity txns]
-  db/Updateable
-  (update-map [this keys ref]
-    (db/entity-map this keys ref))
-  (update-map [this ref]
-    (db/entity-map this [:quantity] ref))
-  (update-map [this]
-    (db/entity-map this [:quantity] nil))
+(defrecord Tax-Lot [quantity txns]
+  Storeable
+  (associate [this txn] (db/transact [{:db/id (:id this) :tax-lot/transactions (:id txn)}]))
+  (update-db [this keys] (db/update-record this keys))
+  (update-db [this] (update-db this [:quantity]))
   )
+
+(defn db->Tax-Lot [entity]
+  (db/make-record map->Tax-Lot entity))

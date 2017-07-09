@@ -1,4 +1,4 @@
-(ns investment-tracker.util-test
+(ns investment-tracker.util-tests
   (:require [clojure.test :refer :all]
             [investment-tracker.util :refer :all])
   (:import (java.util Date)))

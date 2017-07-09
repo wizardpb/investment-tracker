@@ -1,6 +1,9 @@
 (ns investment-tracker.account
   (:require [clojure.spec :as s]
-            [investment-tracker.db :as db]))
+            [investment-tracker.db :as db])
+  (:use investment-tracker.protocols
+        investment-tracker.position)
+  (:import (investment_tracker.position Position)))
 
 (defrecord Account [custodian-id name transactions positions])
 

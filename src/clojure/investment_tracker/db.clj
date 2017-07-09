@@ -2,16 +2,14 @@
   "Functions to interface with the database"
   (:require [datomic.api :as d]
             [investment-tracker.system :as sys]
-            [investment-tracker.authentication :as auth]))
+            [investment-tracker.authentication :as auth])
+  (:use investment-tracker.protocols))
 
-(defprotocol Updateable
-  (ref-attribute [this rec]
-    "Return a (reverse) attribute that refers to the rec type on this")
-  (update-map [this] [this ref] [this keys ref]
-    "Return an map that saves the given keys of this record plus an attribute to add it to the container. If no keys
-    are given, the value of update-keys is used. An optional ref adds an attribute to connect this to the
-    ref holder")
-  )
+(defn get-connection []
+  (get-in sys/system [:db :conn]))
+
+(defn getdb []
+  (d/db (get-connection)))
 
 (defn make-txn [date attrs]
   [(merge (if date {:db/id "datomic.tx" :db/txInstant date} {:db/id "datomic.tx"}) attrs)])
@@ -26,24 +24,28 @@
   ([desc contents] (->Txn nil :UserTxn (auth/current-user-id) desc contents))
   ([contents] (->Txn nil :UserTxn (auth/current-user-id) "" contents)))
 
+(defn transact [contents]
+  (let [{:keys [tempids]} @(d/transact (get-connection) (->Txn contents))]
+    (tempids "tempId")))
+
 (defn db-key [rec key]
   (let [ns (.toLowerCase (.getSimpleName (class rec)))]
     (keyword (str (name ns) "/" (name key)))))
 
 (defn entity-map
-  "Return a map of values that can be transacted to save all values in this record. Adds a tempId if the record is new,
-  filters any nil attributes, and adds an entry to add it to ref if present"
-  [rec keys ref]
+  "Return a map of values that can be transacted to save all values in this record. Adds a tempId if the record is new
+  and filters any nil attributes"
+  [rec keys]
   (let [entity-id (if-let [id (:id rec)] id "tempId")]
-    (merge
-     (if ref (ref-attribute ref rec) {})
-     (into {:db/id entity-id}
-       (map
-         #(vector (db-key rec %) (% rec))
-         (filter #(get rec %) keys))))))
+    (into {:db/id entity-id}
+      (map
+        #(vector (db-key rec %) (% rec))
+        (filter #(get rec %) keys)))))
 
-(defn getdb []
-  (d/db (get-in sys/system [:db :conn])))
+(defn update-record [rec keys]
+  (if-let [new-id (transact [(entity-map rec keys)])]
+    (assoc rec :id new-id)
+    rec))
 
 (defn get-user [user-id]
   (d/entity (getdb) [:user/id user-id]))
@@ -51,7 +53,7 @@
 (defn make-record [rec-fn entity]
   (rec-fn (into {} (map (fn [[k v]] [(keyword (name k)) v]) entity))))
 
-(defn get-security [ident]
+(defn get-entity [ident]
   (d/pull (getdb) "[*]" ident))
 
 (defn get-account [custodian-id]
