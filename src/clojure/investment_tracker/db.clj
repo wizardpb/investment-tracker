@@ -78,7 +78,7 @@
   (let [ent (entity-map rec keys)
         tempIds (transact [ent])]
     (if (seq tempIds)
-      (assoc rec :id ((:db/id ent) tempIds))
+      (assoc rec :id (get tempIds (:db/id ent)))
       rec)))
 
 (defn get-user [user-id]
