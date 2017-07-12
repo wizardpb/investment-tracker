@@ -18,4 +18,4 @@
     :req [::id ::trade-date ::settlement-date ::action ::security ::quantity ::price]
     :opt [::tx-cost ::split-ratio ::comment]))
 
-(defrecord FinTrans [id trade-date settlement-date action quantity price tx-cost split-ratio comment security])
+(defrecord Fin-Trans [id trade-date settlement-date action quantity price tx-cost split-ratio comment security])

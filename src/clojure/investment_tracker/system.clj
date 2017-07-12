@@ -4,36 +4,42 @@
             [investment-tracker.server :refer :all])
   )
 
-(defn- make-system [resource-base]
+(defn make-system [resource-base]
   {:db     {:uri (:db-uri conf/settings)}
    :server (jetty-server "investment_tracker.ui.UI" resource-base)})
 
-(defn- load-custodians [s]
+(defn load-custodians [s]
   (let [db (d/db (get-in s [:db :conn]))
         custs (apply d/pull db "[*]"
                 (d/q '[:find [?c ...] :where [?c :custodian/name]] db))]
     (assoc s :custodians custs)))
 
-(defn- start-server [s]
+(defn open-db [s]
+  (assoc-in s [:db :conn] (d/connect (get-in s [:db :uri]))))
+
+(defn close-db [s]
+  (dissoc s :db :conn))
+
+(defn start-server [s]
   (println "Starting system")
   ;(.start (:server s))
   s)
 
-(defn- stop-server [s]
+(defn stop-server [s]
   (println "Stopping system" )
   (.stop (:server s)))
 
-(defn- start-system [s]
+(defn start-system [s]
   (-> s
-    (assoc-in [:db :conn] (d/connect (get-in s [:db :uri])))
+    (open-db)
     (load-custodians)
     (start-server))
   )
 
-(defn- stop-system [s]
+(defn stop-system [s]
   (-> s
     (stop-server)
-    (dissoc :db :conn)))
+    (close-db)))
 
 (def system nil)
 
