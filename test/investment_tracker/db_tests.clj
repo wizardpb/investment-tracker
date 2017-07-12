@@ -8,6 +8,7 @@
             [investment-tracker.tax-lot :refer :all]
             [investment-tracker.fin-trans :refer :all]
             [investment-tracker.security :refer :all])
+  (:use investment-tracker.protocols)
   (:import (java.util Date)))
 
 (deftest Txn-test
@@ -46,13 +47,18 @@
            {:db/id 1 :attr "val"}]))))
 
 (deftest Transact-test
-  (testing "temp Ids"
-    (let [tempIds (db/transact [{:db/id "position.id"
-                                 :position/security (:id (get-security :AAPL))}])]
-      (is (= (set (keys tempIds)) #{"datomic.tx" "position.id"})))))
+  (try
+    (sys/init)
+    (alter-var-root #'sys/system sys/open-db)
+    (testing "temp Ids"
+      (let [tempIds (db/transact [{:db/id             "position.id"
+                                   :position/security (:id (get-security :AAPL))}])]
+        (is (= (set (keys tempIds)) #{"datomic.tx" "position.id"}))))
+    (finally
+      (sys/stop))))
 
 (deftest Entity-map-test
-  (do
+  (try
     (sys/init)
     (alter-var-root #'sys/system sys/open-db)
     (testing "DB Open"
@@ -84,4 +90,13 @@
              {:db/id                "tax-lot.id"
               :tax-lot/quantity 100M
               :tax-lot/transactions 10000}))))
+    (finally
+      (sys/stop))
     ))
+
+(deftest Record-update
+  (try
+    (sys/init)
+    (alter-var-root #'sys/system sys/open-db)
+    (testing "Tax Lot"
+      (is (int? (:id (update-db (map->Tax-Lot {:quantity 100M}))))))))

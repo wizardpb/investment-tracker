@@ -27,7 +27,8 @@
 
 (defn stop-server [s]
   (println "Stopping system" )
-  (.stop (:server s)))
+  (if-let [server (:server s)]
+    (.stop server)))
 
 (defn start-system [s]
   (-> s

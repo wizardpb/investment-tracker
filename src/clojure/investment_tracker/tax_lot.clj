@@ -5,7 +5,7 @@
 (defrecord Tax-Lot [quantity transactions]
   Storeable
   (update-db [this keys] (db/update-record this keys))
-  (update-db [this] (update-db this [:quantity]))
+  (update-db [this] (update-db this (keys this)))
   )
 
 (defn db->Tax-Lot [entity]
