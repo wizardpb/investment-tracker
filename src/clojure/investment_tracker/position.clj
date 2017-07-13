@@ -7,6 +7,7 @@
 
 (defrecord Position [security lots]
   Storeable
+  (db-namespace [_] "position")
   (update-db [this keys] (db/update-record this keys))
   (update-db [this] (db/update-record this [:value :value-date])))
 

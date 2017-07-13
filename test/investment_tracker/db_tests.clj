@@ -76,7 +76,7 @@
         )
       )
     (testing "Unsaved ref keys"
-      (let [rec (map->Tax-Lot {:quantity 150M :transactions (map->Fin-Trans {:action "Buy"})})]
+      (let [rec (map->Tax-Lot {:quantity 150M :transactions (map->EquityTrade {:action "Buy"})})]
         (is (= (db/entity-map rec [:quantity :transactions])
               {:db/id    "tax-lot.id"
                :tax-lot/quantity 150M }))
@@ -85,7 +85,7 @@
         )
       )
     (testing "Saved ref keys"
-      (let [rec (map->Tax-Lot {:quantity 100M :transactions (assoc (map->Fin-Trans {:action "Buy"}) :id 10000)})]
+      (let [rec (map->Tax-Lot {:quantity 100M :transactions (assoc (map->EquityTrade {:action "Buy"}) :id 10000)})]
         (is (= (db/entity-map rec [:quantity :transactions])
              {:db/id                "tax-lot.id"
               :tax-lot/quantity 100M

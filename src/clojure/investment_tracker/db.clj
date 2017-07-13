@@ -29,12 +29,8 @@
   (let [{:keys [tempids]} @(d/transact (get-connection) (->Txn contents))]
     tempids))
 
-(defn db-ns [rec]
-  (.toLowerCase (.getSimpleName (class rec))))
-
 (defn db-key [rec key]
-  (let [ns (db-ns rec)]
-    (keyword (str ns "/" (name key)))))
+  (keyword (str (db-namespace rec) "/" (name key))))
 
 (defn value-type
   "Return the db value type for the record key 'key' of record 'rec'"
@@ -47,7 +43,7 @@
                 ]
         result (d/q query (getdb))
         attr-types (into {} (filter
-                      #(= (namespace (first %)) (db-ns rec))
+                      #(= (namespace (first %)) (db-namespace rec))
                       result))
         res (attr-types (db-key rec key))]
     res))
@@ -68,7 +64,7 @@
   "Return a map of values that can be transacted to save all values in this record. Adds a tempId if the record is new
   and filters any nil attributes."
   [rec keys]
-  (let [tid (if-let [id (:id rec)] id (str (db-ns rec) ".id"))]
+  (let [tid (if-let [id (:id rec)] id (str (db-namespace rec) ".id"))]
     (into {:db/id tid} (map #(attr-value rec %) (filter #(get rec %) keys)))
     )
   )

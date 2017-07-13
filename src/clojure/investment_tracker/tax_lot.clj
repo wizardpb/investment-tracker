@@ -4,6 +4,7 @@
 
 (defrecord Tax-Lot [quantity transactions]
   Storeable
+  (db-namespace [_] "tax-lot")
   (update-db [this keys] (db/update-record this keys))
   (update-db [this] (update-db this (keys this)))
   )

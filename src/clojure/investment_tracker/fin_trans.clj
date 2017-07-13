@@ -1,6 +1,7 @@
 (ns investment-tracker.fin-trans
   (:require [clojure.spec :as s]
-            [investment-tracker.security :as security]))
+            [investment-tracker.security :as security])
+  (:use investment-tracker.protocols))
 
 (s/def ::id string?)                                        ;format ?
 (s/def ::trade-date inst?)
@@ -13,9 +14,6 @@
 (s/def ::comment string?)
 (s/def ::security ::security/security)
 
-(s/def ::tax-lot
-  (s/keys
-    :req [::id ::trade-date ::settlement-date ::action ::security ::quantity ::price]
-    :opt [::tx-cost ::split-ratio ::comment]))
 
-(defrecord Fin-Trans [id trade-date settlement-date action quantity price tx-cost split-ratio comment security])
+(defrecord EquityTrade [id trade-date settlement-date action quantity price tx-cost comment security]
+  )
