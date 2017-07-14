@@ -98,5 +98,7 @@
   (try
     (sys/init)
     (alter-var-root #'sys/system sys/open-db)
-    (testing "Tax Lot"
-      (is (int? (:id (update-db (map->Tax-Lot {:quantity 100M}))))))))
+    (let [t (update-db (map->Tax-Lot {:quantity 100M}))]
+      (testing "Tax Lot"
+       (is (int? (:id t)))
+       (is (= (:id (update-db (assoc t :quantity 200M))) (:id t)))))))

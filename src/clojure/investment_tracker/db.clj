@@ -27,7 +27,7 @@
 
 (defn transact [contents]
   (let [{:keys [tempids]} @(d/transact (get-connection) (->Txn contents))]
-    tempids))
+    (dissoc tempids "datomic.tx")))
 
 (defn db-key [rec key]
   (keyword (str (db-namespace rec) "/" (name key))))
@@ -64,8 +64,10 @@
   "Return a map of values that can be transacted to save all values in this record. Adds a tempId if the record is new
   and filters any nil attributes."
   [rec keys]
-  (let [tid (if-let [id (:id rec)] id (str (db-namespace rec) ".id"))]
-    (into {:db/id tid} (map #(attr-value rec %) (filter #(get rec %) keys)))
+  (let [tid (if-let [id (:id rec)] id (str (db-namespace rec) ".id"))
+        ent-keys (filter #(and (not= :id %) (get rec %) ) keys)]
+    ;; Only do non-nil keys and ignore :id
+    (into {:db/id tid} (map #(attr-value rec %) ent-keys))
     )
   )
 
@@ -81,13 +83,10 @@
   (d/entity (getdb) [:user/id user-id]))
 
 (defn make-record [rec-fn entity]
-  (rec-fn (into {} (map (fn [[k v]] [(keyword (name k)) v]) entity))))
+  (if entity (rec-fn (into {} (map (fn [[k v]] [(keyword (name k)) v]) entity)))))
 
 (defn get-entity [ident]
-  (d/pull (getdb) "[*]" ident))
+  (if ident (d/pull (getdb) "[*]" ident)))
 
 (defn get-account [custodian-id]
   (d/pull (getdb) "[*]" [:account/custodian-id custodian-id]))
-
-(defn get-all-accounts []
-  (flatten (d/q "[:find (pull ?e [*]) :where [?e :account/custodian-id]]" (getdb))))

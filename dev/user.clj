@@ -12,8 +12,8 @@
             [investment-tracker.system :as sys])
 
   (:use investment-tracker.protocols
-        investment-tracker.system
         investment-tracker.authentication
+        investment-tracker.fin-trans
         investment-tracker.finenv
         investment-tracker.security
         investment-tracker.account
@@ -31,9 +31,9 @@
   (d/db (conn)))
 
 (defn rebuild-db []
-  (stop)
+  (sys/stop)
   (let [rb (di/rebuild-db)]
-    (go)
+    (sys/go)
     rb))
 
 (def test-dir "test/")

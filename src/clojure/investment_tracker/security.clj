@@ -20,3 +20,4 @@
 
 (defn get-security [ticker]
   (db->Security (db/get-entity [:security/ticker ticker])))
+
