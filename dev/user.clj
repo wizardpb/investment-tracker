@@ -9,7 +9,8 @@
             [investment-tracker.config :as c]
             [investment-tracker.db :as db]
             [investment-tracker.dbinit.core :as di]
-            [investment-tracker.system :as sys])
+            [investment-tracker.system :as sys]
+            [investment-tracker.test-helpers :refer :all])
 
   (:use investment-tracker.protocols
         investment-tracker.authentication
@@ -19,22 +20,32 @@
         investment-tracker.account
         investment-tracker.position
         investment-tracker.tax-lot
+        investment-tracker.util
         )
 
   (:import (org.apache.commons.io FileUtils)
            (java.io File)))
 
-(defn conn []
-  (get-in sys/system [:db :conn]))
+;(defn conn []
+;  (get-in sys/system [:db :conn]))
+;
+;(defn db []
+;  (d/db (conn)))
 
-(defn db []
-  (d/db (conn)))
-
-(defn rebuild-db []
+(defn rebuild-db
+  [conf]
   (sys/stop)
-  (let [rb (di/rebuild-db)]
-    (sys/go)
-    rb))
+  (di/rebuild-db conf))
+
+(defn rebuild-dev []
+  (rebuild-db c/dev-base))
+
+(defn rebuild-test []
+  (rebuild-db c/test-base))
+
+(defn rebuild-dbs []
+  (rebuild-dev)
+  (rebuild-test))
 
 (def test-dir "test/")
 
@@ -58,7 +69,3 @@
       (load-file fname))
     (apply run-tests (map test-ns-sym test-files))))
 
-(s/def ::a int?)
-(s/def ::typeas (s/cat ::acol (s/* (s/keys :req [::a]))))
-(s/def ::b string?)
-(s/def ::typeb (s/keys :req [::b ::typeas]))

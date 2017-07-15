@@ -1,11 +1,10 @@
 (ns investment-tracker.dbinit.core
-  (:require [investment-tracker.config :as conf]
-            [investment-tracker.util :refer :all]
-            [investment-tracker.db :as db]
-            [datomic.api :as d]
+  (:require [datomic.api :as d]
             [clojure.data.csv :as csv]
             [clojure.java.io :as io]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [investment-tracker.util :refer :all]
+            [investment-tracker.db :as db])
   (:import (java.util Date)))
 
 (def secuirty-files ["NASDAQ.csv" "NYSE.csv"])
@@ -27,7 +26,8 @@
 
 (defn load-edn-file [conn index dir fname]
   (let [schema (read-string (slurp (str dir fname)))
-        tx-data (db/->Txn (Date. ^Long (* 1000 index)) :SchemaCreate "Setup" fname schema)]
+        date (if (neg? index) (Date.) (Date. ^Long (* 1000 index)))
+        tx-data (db/->Txn date :SchemaCreate "Setup" fname schema)]
     (println fname "...")
     @(d/transact conn tx-data)))
 
@@ -62,10 +62,10 @@
           (.write out-file (make-security-tx rec)))))
     (.write out-file "]\n")))
 
-(defn rebuild-db []
-  (d/delete-database (:db-uri conf/settings))
-  (d/create-database (:db-uri conf/settings))
-  (let [conn (d/connect (:db-uri conf/settings))]
+(defn rebuild-db [conf]
+  (d/delete-database (:db-uri conf))
+  (d/create-database (:db-uri conf))
+  (let [conn (d/connect (:db-uri conf))]
     (reduce +
       (map #(count (:tempids %))
        (concat

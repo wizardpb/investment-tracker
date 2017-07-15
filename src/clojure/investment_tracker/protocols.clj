@@ -1,4 +1,5 @@
-(ns investment-tracker.protocols)
+(ns investment-tracker.protocols
+  (:import (org.h2.value ValueJavaObject$NotSerialized)))
 
 (defprotocol Storeable
   "A protocol to interface a record to Datomic - generates a transaction structure for teh given keys and write to
@@ -10,5 +11,13 @@
   )
 
 (defprotocol FinTrans
-  "A protocol to execute a financila transaction"
-  (apply-to [this account] "Apply this trade to the given account"))
+  "A protocol to execute a financial transaction"
+  (execute [this account] "Apply this trade to the given account"))
+
+(defprotocol Tradeable
+  "Some transaction that causes a trade"
+  (buy [this accout])
+  (sell [this accout]))
+
+(defprotocol Valuable
+  (value [this valueDate] "Provide the value of this element as of the value date"))

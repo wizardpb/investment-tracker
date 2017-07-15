@@ -17,15 +17,15 @@
 
 
 (defn add-position [this security]
-  (->> (update-db (map->Position {:security security}))
-    (assoc this :positions)
-    (update-db)
-    :id
-    (db/get-entity))
+  (let [posn (update-db (map->Position {:security security}))]
+    (->> posn
+     (assoc this :positions)
+     (update-db))
+    posn)
   )
 
 (defn find-position [this security]
-  (some #(if (= (get-in [:security :ticker] %) (:ticker security)) %) (:positions this)))
+  (some #(if (= (get-in % [:security :ticker]) (:ticker security)) %) (:positions this)))
 
 (defn find-or-add-position [this security]
   (if-let [posn (find-position this security)]
@@ -42,8 +42,3 @@
 (defn get-account [custodian-id]
   (db->Account (db/get-account custodian-id)))
 
-(defn buy [trade this]
-  (add-transaction this trade)
-  (add-lot (find-or-add-position this (:security trade)) trade))
-
-(defn sell [trade this])

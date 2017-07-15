@@ -21,7 +21,6 @@
   :db/ident :account/transactions
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/isComponent true                                      ;Accounts own the transactions
   :db/doc "The account transactions"
   :db.install/_attribute :db.part/db}
 

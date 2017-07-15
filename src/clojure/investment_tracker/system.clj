@@ -1,12 +1,14 @@
 (ns investment-tracker.system
   (:require [datomic.api :as d]
-            [investment-tracker.config :as conf]
+            [investment-tracker.config :as c]
             [investment-tracker.server :refer :all])
   )
 
-(defn make-system [resource-base]
-  {:db     {:uri (:db-uri conf/settings)}
-   :server (jetty-server "investment_tracker.ui.UI" resource-base)})
+(defn make-system [conf]
+  (assoc
+    {:db {:uri (:db-uri conf)}}
+    :server (if-let [rb (:resource-base conf)]
+              (jetty-server "investment_tracker.ui.UI" rb))))
 
 (defn load-custodians [s]
   (let [db (d/db (get-in s [:db :conn]))
@@ -21,13 +23,14 @@
   (dissoc s :db :conn))
 
 (defn start-server [s]
-  (println "Starting system")
-  ;(.start (:server s))
+  (when-let [server (:server s)]
+    (println "Starting server")
+    (.start server))
   s)
 
 (defn stop-server [s]
-  (println "Stopping system" )
-  (if-let [server (:server s)]
+  (when-let [server (:server s)]
+    (println "Stopping server" )
     (.stop server)))
 
 (defn start-system [s]
@@ -44,8 +47,10 @@
 
 (def system nil)
 
-(defn init []
-  (alter-var-root #'system (fn [_] (make-system "resources/public"))))
+(defn init
+  ([conf]
+   (alter-var-root #'system (fn [_] (make-system conf))))
+  ([] (init c/dev-base)))
 
 (defn start []
   (alter-var-root #'system start-system))
@@ -60,8 +65,8 @@
 (defn system-dissoc [keys]
   (alter-var-root #'system (fn [s] (apply dissoc s keys))))
 
-(defn go []
-  (init)
-  (start))
+(defn go
+  ([conf] (init conf) (start))
+  ([] (go c/dev-base)))
 
 

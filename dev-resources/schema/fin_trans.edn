@@ -10,7 +10,7 @@
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :fin-trans/custodian-id
+  :db/ident :fin-trans/custodian-trade-id
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/unique :db.unique/identity
@@ -66,12 +66,12 @@
   :db/doc "The cost of the financial transaction."
   :db.install/_attribute :db.part/db}
 
- {:db/id #db/id[:db.part/db]
-  :db/ident :fin-trans/split-ratio
-  :db/valueType :db.type/bigdec
-  :db/cardinality :db.cardinality/one
-  :db/doc "Split ratio. The amount 1 share is split into e.g 2-for-1 split would have a value of 2.0"
-  :db.install/_attribute :db.part/db}
+ ;{:db/id #db/id[:db.part/db]
+ ; :db/ident :fin-trans/split-ratio
+ ; :db/valueType :db.type/bigdec
+ ; :db/cardinality :db.cardinality/one
+ ; :db/doc "Split ratio. The amount 1 share is split into e.g 2-for-1 split would have a value of 2.0"
+ ; :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
   :db/ident :fin-trans/comment
